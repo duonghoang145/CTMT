@@ -1,0 +1,12 @@
+src/add.sv
+src/brcomp.sv
+src/ctrl_unit.sv
+src/immgen.sv
+src/inst_memory.sv
+src/lsu.sv
+src/mux.sv
+src/pc.sv
+src/regfile.sv
+src/singlecycle.sv
+src/wbmux.sv
+src/alu.sv

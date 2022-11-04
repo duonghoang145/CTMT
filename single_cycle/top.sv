@@ -1,0 +1,31 @@
+module top (
+	input logic clk_i,
+	input logic rst_ni,
+	input logic [17:0] io_sw,
+	output logic [31:0] io_lcd,
+	output logic [31:0] io_ledg,
+	output logic [31:0] io_ledr,
+	output logic [31:0] io_hex0,
+	output logic [31:0] io_hex1,
+	output logic [31:0] io_hex2,
+	output logic [31:0] io_hex3,
+	output logic [31:0] io_hex4,
+	output logic [31:0] io_hex5,
+	output logic [31:0] io_hex6,
+	output logic [31:0] io_hex7);
+
+	singlecycle sc (.clk_i(clk_i),
+		.rst_ni(rst_ni),
+		.io_sw(io_sw),
+		.io_lcd(io_lcd),
+		.io_ledg(io_ledg),
+                .io_ledr(io_ledr),
+                .io_hex0(io_hex0),
+                .io_hex1(io_hex1),
+                .io_hex2(io_hex2),
+                .io_hex3(io_hex3),
+                .io_hex4(io_hex4),
+                .io_hex5(io_hex5),
+                .io_hex6(io_hex6),
+                .io_hex7(io_hex7));
+endmodule

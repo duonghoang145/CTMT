@@ -28,10 +28,15 @@ end
 logic [3:0][7:0] ram_read;
 
 always_comb begin: proc_read
-	ram_read[3] = mem[addr_i+3];
-	ram_read[2] = mem[addr_i+2];
-	ram_read[1] = mem[addr_i+1];
-	ram_read[0] = mem[addr_i];
+	if (~wren_i)
+	begin	
+		ram_read[3] = mem[addr_i+3];
+		ram_read[2] = mem[addr_i+2];
+		ram_read[1] = mem[addr_i+1];
+		ram_read[0] = mem[addr_i];
+	end
+	else
+		ram_read[3:0] = 32'd0;
 end
 
 assign rdata_o = ram_read[3:0];

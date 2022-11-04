@@ -44,6 +44,7 @@ always_latch begin: proc_sel
 	else if (addr_sel == 4'h4)
 	begin
 		output_peri_in = st_data_i;
+		if (~st_en_i)
 		ld_data_o[3:0] = output_peri_out;
 	end
 	else
@@ -55,7 +56,6 @@ end
 		
 always_ff @(posedge clk_i) begin : proc_inputperiph_write
 	if (rst_ni)
-		if (st_en_i)
 		begin
 			input_mem[addr_peri] <= input_peri_in[7:0];
 			input_mem[addr_peri+1] <= input_peri_in[15:8];
@@ -64,13 +64,9 @@ always_ff @(posedge clk_i) begin : proc_inputperiph_write
 end
 
 always_comb begin : proc_inputperiph_read
-	input_peri_out = 18'd0;
-	if (~st_en_i)
-	begin
 		input_peri_out[7:0] = input_mem[addr_peri];
 		input_peri_out[15:8] = input_mem[addr_peri+1];
 		input_peri_out[17:16] = input_mem[addr_peri+2][1:0];
-	end
 end
 	
 always_ff @(posedge clk_i) begin : proc_outputperiph_write
@@ -85,14 +81,10 @@ always_ff @(posedge clk_i) begin : proc_outputperiph_write
 end
 
 always_comb begin : proc_outputperiph_read
-	output_peri_out = 32'd0;
-	if (~st_en_i)
-	begin
 		output_peri_out[7:0] = output_mem[addr_peri];
 		output_peri_out[15:8] = output_mem[addr_peri+1];
 		output_peri_out[23:16] = output_mem[addr_peri+2];
 		output_peri_out[31:24] = output_mem[addr_peri+3];
-	end
 end
 
 always_ff @(posedge clk_i) begin : proc_data_write
@@ -150,11 +142,9 @@ always_comb begin: proc_data_read
 		endcase
 end
 
-always_latch begin : proc_io
-
-	if (~st_en_i)	
+always_latch begin : proc_io	
 		casez (addr_peri)
-			8'h0?: io_hex0_o = output_peri_out;
+			8'h0? : io_hex0_o = output_peri_out;
 			8'h1? : io_hex1_o = output_peri_out;
 			8'h2? : io_hex2_o = output_peri_out;
 			8'h3? : io_hex3_o = output_peri_out;
@@ -165,22 +155,8 @@ always_latch begin : proc_io
 			8'h8? : io_ledr_o = output_peri_out;
 			8'h9? : io_ledg_o = output_peri_out;
 			8'ha? : io_lcd_o = output_peri_out;
-			
-			default: begin
-				io_hex0_o = 32'd0;
-				io_hex1_o = 32'd0;
-				io_hex2_o = 32'd0;
-				io_hex3_o = 32'd0;
-				io_hex4_o = 32'd0;
-				io_hex5_o = 32'd0;
-				io_hex6_o = 32'd0;
-				io_hex7_o = 32'd0;
-				io_ledr_o = 32'd0;
-				io_ledg_o = 32'd0;
-				io_lcd_o  = 32'd0;
-			end
+			default:;
 		endcase
-
 end			
 
 endmodule
